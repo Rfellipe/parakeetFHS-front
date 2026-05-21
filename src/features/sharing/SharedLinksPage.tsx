@@ -43,13 +43,19 @@ export function SharedLinksPage() {
                 </Table.Td>
               </Table.Tr>
             ) : null}
-            {links.map((link) => (
+            {links.map(link => (
               <Table.Tr key={link.id}>
                 <Table.Td>{link.token}</Table.Td>
                 <Table.Td>{`${link.resourceType}:${link.resourceId}`}</Table.Td>
                 <Table.Td>{link.access}</Table.Td>
                 <Table.Td>
-                  <Button size="xs" color="red" variant="light" onClick={() => void apiClient.shares.revoke(link.id).then(load)}>
+                  <Button
+                    size="xs"
+                    color="red"
+                    variant="light"
+                    onClick={() =>
+                      void apiClient.shares.revoke(link.id).then(load)
+                    }>
                     Revoke
                   </Button>
                 </Table.Td>

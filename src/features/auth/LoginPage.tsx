@@ -1,4 +1,12 @@
-import { Alert, Button, Paper, PasswordInput, Stack, TextInput, Title } from '@mantine/core'
+import {
+  Alert,
+  Button,
+  Paper,
+  PasswordInput,
+  Stack,
+  TextInput,
+  Title,
+} from '@mantine/core'
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from './AuthProvider'
@@ -20,7 +28,8 @@ export function LoginPage() {
 
     try {
       await login(email, password)
-      const redirect = (location.state as { from?: string } | undefined)?.from ?? '/files'
+      const redirect =
+        (location.state as { from?: string } | undefined)?.from ?? '/files'
       navigate(redirect, { replace: true })
     } catch {
       setError('Login failed. Check credentials and try again.')
@@ -39,13 +48,13 @@ export function LoginPage() {
             <TextInput
               label="Email"
               value={email}
-              onChange={(e) => setEmail(e.currentTarget.value)}
+              onChange={e => setEmail(e.currentTarget.value)}
               required
             />
             <PasswordInput
               label="Password"
               value={password}
-              onChange={(e) => setPassword(e.currentTarget.value)}
+              onChange={e => setPassword(e.currentTarget.value)}
               required
             />
             <Button type="submit" loading={submitting}>

@@ -1,4 +1,12 @@
-import { AppShell, Burger, Button, Group, NavLink, Stack, Text } from '@mantine/core'
+import {
+  AppShell,
+  Burger,
+  Button,
+  Group,
+  NavLink,
+  Stack,
+  Text,
+} from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../features/auth/AuthProvider'
@@ -19,12 +27,16 @@ export function AppShellLayout() {
     <AppShell
       header={{ height: 64 }}
       navbar={{ width: 260, breakpoint: 'sm', collapsed: { mobile: !opened } }}
-      padding="md"
-    >
+      padding="md">
       <AppShell.Header>
         <Group h="100%" px="md" justify="space-between">
           <Group>
-            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              hiddenFrom="sm"
+              size="sm"
+            />
             <Text fw={700}>File Hosting System</Text>
           </Group>
           <Group>
@@ -40,7 +52,7 @@ export function AppShellLayout() {
 
       <AppShell.Navbar p="sm">
         <Stack>
-          {navItems.map((item) => (
+          {navItems.map(item => (
             <NavLink
               key={item.to}
               component={Link}

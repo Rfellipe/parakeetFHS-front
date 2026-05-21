@@ -44,16 +44,27 @@ export function TrashPage() {
                 </Table.Td>
               </Table.Tr>
             ) : null}
-            {folders.map((folder) => (
+            {folders.map(folder => (
               <Table.Tr key={folder.id}>
                 <Table.Td>{folder.name}</Table.Td>
                 <Table.Td>{folder.trashedAt}</Table.Td>
                 <Table.Td>
                   <Group>
-                    <Button size="xs" variant="light" onClick={() => void apiClient.folders.restore(folder.id).then(load)}>
+                    <Button
+                      size="xs"
+                      variant="light"
+                      onClick={() =>
+                        void apiClient.folders.restore(folder.id).then(load)
+                      }>
                       Restore
                     </Button>
-                    <Button size="xs" color="red" variant="light" onClick={() => void apiClient.folders.purge(folder.id).then(load)}>
+                    <Button
+                      size="xs"
+                      color="red"
+                      variant="light"
+                      onClick={() =>
+                        void apiClient.folders.purge(folder.id).then(load)
+                      }>
                       Delete forever
                     </Button>
                   </Group>
@@ -82,16 +93,27 @@ export function TrashPage() {
                 </Table.Td>
               </Table.Tr>
             ) : null}
-            {files.map((file) => (
+            {files.map(file => (
               <Table.Tr key={file.id}>
                 <Table.Td>{file.name}</Table.Td>
                 <Table.Td>{file.trashedAt}</Table.Td>
                 <Table.Td>
                   <Group>
-                    <Button size="xs" variant="light" onClick={() => void apiClient.files.restore(file.id).then(load)}>
+                    <Button
+                      size="xs"
+                      variant="light"
+                      onClick={() =>
+                        void apiClient.files.restore(file.id).then(load)
+                      }>
                       Restore
                     </Button>
-                    <Button size="xs" color="red" variant="light" onClick={() => void apiClient.files.purge(file.id).then(load)}>
+                    <Button
+                      size="xs"
+                      color="red"
+                      variant="light"
+                      onClick={() =>
+                        void apiClient.files.purge(file.id).then(load)
+                      }>
                       Delete forever
                     </Button>
                   </Group>

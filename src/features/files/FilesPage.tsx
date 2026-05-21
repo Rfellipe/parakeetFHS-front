@@ -32,8 +32,11 @@ export function FilesPage() {
   const [error, setError] = useState<string | null>(null)
 
   const folderOptions = useMemo(
-    () => [{ value: '', label: 'Root' }, ...tree.map((f) => ({ value: f.id, label: f.name }))],
-    [tree],
+    () => [
+      { value: '', label: 'Root' },
+      ...tree.map(f => ({ value: f.id, label: f.name })),
+    ],
+    [tree]
   )
 
   const load = useCallback(async (): Promise<void> => {
@@ -96,7 +99,7 @@ export function FilesPage() {
           label="Current folder"
           value={folderId ?? ''}
           data={folderOptions}
-          onChange={(value) => setFolderId(value || null)}
+          onChange={value => setFolderId(value || null)}
         />
       </Group>
 
@@ -109,7 +112,7 @@ export function FilesPage() {
             <TextInput
               placeholder="Invoices"
               value={newFolderName}
-              onChange={(e) => setNewFolderName(e.currentTarget.value)}
+              onChange={e => setNewFolderName(e.currentTarget.value)}
             />
             <Button onClick={() => void createFolder()}>Add folder</Button>
           </Stack>
@@ -120,11 +123,9 @@ export function FilesPage() {
             <TextInput
               placeholder="contract.pdf"
               value={newFileName}
-              onChange={(e) => setNewFileName(e.currentTarget.value)}
+              onChange={e => setNewFileName(e.currentTarget.value)}
             />
-            <Button onClick={() => void uploadFile()}>
-              Add file
-            </Button>
+            <Button onClick={() => void uploadFile()}>Add file</Button>
           </Stack>
         </Paper>
       </Group>
@@ -134,8 +135,10 @@ export function FilesPage() {
           Folders
         </Title>
         <Group>
-          {folders.length === 0 ? <Text c="dimmed">No folders in this location.</Text> : null}
-          {folders.map((folder) => (
+          {folders.length === 0 ? (
+            <Text c="dimmed">No folders in this location.</Text>
+          ) : null}
+          {folders.map(folder => (
             <Badge key={folder.id} variant="light" size="lg">
               {folder.name}
             </Badge>
@@ -164,17 +167,28 @@ export function FilesPage() {
                 </Table.Td>
               </Table.Tr>
             ) : null}
-            {files.map((file) => (
+            {files.map(file => (
               <Table.Tr key={file.id}>
                 <Table.Td>{file.name}</Table.Td>
                 <Table.Td>{prettySize(file.sizeBytes)}</Table.Td>
-                <Table.Td>{shares.filter((s) => s.resourceId === file.id).length}</Table.Td>
+                <Table.Td>
+                  {shares.filter(s => s.resourceId === file.id).length}
+                </Table.Td>
                 <Table.Td>
                   <Group>
-                    <Button size="xs" variant="light" onClick={() => void shareFile(file.id)}>
+                    <Button
+                      size="xs"
+                      variant="light"
+                      onClick={() => void shareFile(file.id)}>
                       Share
                     </Button>
-                    <Button size="xs" color="red" variant="light" onClick={() => void apiClient.files.delete(file.id).then(load)}>
+                    <Button
+                      size="xs"
+                      color="red"
+                      variant="light"
+                      onClick={() =>
+                        void apiClient.files.delete(file.id).then(load)
+                      }>
                       Move to trash
                     </Button>
                   </Group>

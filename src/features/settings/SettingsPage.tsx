@@ -14,7 +14,9 @@ export function SettingsPage() {
     void apiClient.usage.getUsage().then(setUsage)
   }, [])
 
-  const ratio = usage ? Math.min(100, (usage.usedBytes / usage.totalBytes) * 100) : 0
+  const ratio = usage
+    ? Math.min(100, (usage.usedBytes / usage.totalBytes) * 100)
+    : 0
 
   return (
     <Stack>
@@ -24,7 +26,9 @@ export function SettingsPage() {
           <Text fw={600}>Storage usage</Text>
           <Progress value={ratio} />
           <Text size="sm" c="dimmed">
-            {usage ? `${bytesToGb(usage.usedBytes)} / ${bytesToGb(usage.totalBytes)}` : 'Loading...'}
+            {usage
+              ? `${bytesToGb(usage.usedBytes)} / ${bytesToGb(usage.totalBytes)}`
+              : 'Loading...'}
           </Text>
         </Stack>
       </Paper>
