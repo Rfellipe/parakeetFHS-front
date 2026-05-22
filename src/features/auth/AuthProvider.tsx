@@ -1,59 +1,47 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import type { AuthUser } from '../../types/domain'
+import { useEffect, useMemo, useState } from 'react'
+import type { TokenInfo } from '../../types/domain'
 import { apiClient } from '../../services/client'
-
-type AuthContextValue = {
-  user: AuthUser | null
-  loading: boolean
-  login: (email: string, password: string) => Promise<void>
-  logout: () => Promise<void>
-  refreshSession: () => Promise<void>
-}
-
-const AuthContext = createContext<AuthContextValue | null>(null)
+import { AuthContext, type AuthContextValue } from './AuthContext'
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null)
+  const [session, setSession] = useState<TokenInfo | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    void apiClient.auth
-      .me()
-      .then(setUser)
-      .catch(() => {
-        setUser(null)
-      })
-      .finally(() => {
+    void (async () => {
+      try {
+        const token = await apiClient.auth.refresh()
+        setSession(token.success ? token.data : null)
+      } catch {
+        setSession(null)
+      } finally {
         setLoading(false)
-      })
+      }
+    })()
   }, [])
 
   const value = useMemo<AuthContextValue>(
     () => ({
-      user,
+      session,
       loading,
-      login: async (email, password) => {
-        const authUser = await apiClient.auth.login(email, password)
-        setUser(authUser)
+      login: async (email, pass) => {
+        const token = await apiClient.auth.login(email, pass)
+        if (!token.success) {
+          throw new Error(token.error.message)
+        }
+        setSession(token.data)
       },
       logout: async () => {
         await apiClient.auth.logout()
-        setUser(null)
+        setSession(null)
       },
       refreshSession: async () => {
-        const authUser = await apiClient.auth.refresh()
-        setUser(authUser)
+        const token = await apiClient.auth.refresh()
+        setSession(token.success ? token.data : null)
       },
     }),
-    [loading, user]
+    [loading, session]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-}
-
-// eslint-disable-next-line react-refresh/only-export-components
-export function useAuth(): AuthContextValue {
-  const ctx = useContext(AuthContext)
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider')
-  return ctx
 }

@@ -9,7 +9,7 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { useAuth } from '../features/auth/AuthProvider'
+import { useAuth } from '../features/auth/AuthContext'
 
 const navItems = [
   { to: '/files', label: 'Files' },
@@ -21,7 +21,7 @@ const navItems = [
 export function AppShellLayout() {
   const [opened, { toggle }] = useDisclosure()
   const { pathname } = useLocation()
-  const { user, logout } = useAuth()
+  const { session, logout } = useAuth()
 
   return (
     <AppShell
@@ -41,7 +41,7 @@ export function AppShellLayout() {
           </Group>
           <Group>
             <Text c="dimmed" size="sm">
-              {user?.email}
+              {session ? 'Session active' : ''}
             </Text>
             <Button variant="light" onClick={() => void logout()}>
               Logout

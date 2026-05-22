@@ -9,7 +9,7 @@ import {
 } from '@mantine/core'
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useAuth } from './AuthProvider'
+import { useAuth } from './AuthContext'
 
 export function LoginPage() {
   const { login } = useAuth()

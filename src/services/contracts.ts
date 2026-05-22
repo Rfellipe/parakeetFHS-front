@@ -1,4 +1,5 @@
 import type {
+  ApiResponse,
   AuthUser,
   FileItem,
   FileListResult,
@@ -8,7 +9,10 @@ import type {
   ShareAccess,
   ShareLink,
   StorageUsage,
+  TokenInfo,
 } from '../types/domain'
+
+export type TokenReturn = ApiResponse<TokenInfo>
 
 export type UploadInput = {
   name: string
@@ -25,8 +29,8 @@ export type CreateShareInput = {
 }
 
 export interface AuthService {
-  login(email: string, password: string): Promise<AuthUser>
-  refresh(): Promise<AuthUser>
+  login(email: string, pass: string): Promise<TokenReturn>
+  refresh(): Promise<TokenReturn>
   logout(): Promise<void>
   me(): Promise<AuthUser>
 }

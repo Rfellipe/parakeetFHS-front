@@ -50,13 +50,28 @@ export type PublicShareView = {
   expiresAt: string | null
 }
 
-export type ApiError = {
-  code: string
-  message: string
-  status?: number
-}
-
 export type FileListResult = {
   folders: FolderItem[]
   files: FileItem[]
+}
+
+export type ApiResponse<T> =
+  | {
+      success: true
+      data: T
+      error?: never
+    }
+  | {
+      success: false
+      data?: never
+      error: {
+        code: number
+        message: string
+      }
+    }
+
+export type TokenInfo = {
+  accessToken: string
+  message: string
+  tokenExp: number
 }
