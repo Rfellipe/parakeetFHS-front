@@ -1,9 +1,13 @@
+import type { LoginInfo } from '../services/contracts'
+
 export type ID = string
 
 export type AuthUser = {
   id: ID
-  name: string
   email: string
+  status: string
+  rootDirId: string
+  loginAttempts: number
 }
 
 export type StorageUsage = {
@@ -70,8 +74,7 @@ export type ApiResponse<T> =
       }
     }
 
-export type TokenInfo = {
-  accessToken: string
-  message: string
-  tokenExp: number
-}
+export type Message = { message: string }
+
+export type AuthReturn = ApiResponse<LoginInfo>
+export type LogoutReturn = ApiResponse<Message>

@@ -4,20 +4,20 @@ import type {
   FileService,
   FolderService,
   ShareService,
-  TokenReturn,
   UsageService,
   UploadInput,
 } from '../contracts'
 import type {
   ApiResponse,
-  AuthUser,
   FileItem,
   FileListResult,
   FolderItem,
   ID,
+  AuthReturn,
   PublicShareView,
   ShareLink,
   StorageUsage,
+  LogoutReturn,
 } from '../../types/domain'
 
 type RequestOptions = Omit<RequestInit, 'body'> & {
@@ -72,8 +72,8 @@ class HttpApiAdapter implements ApiServices {
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl
     this.auth = {
-      login: async (email: string, pass: string): Promise<TokenReturn> => {
-        const response = await this.requestApi<TokenReturn>('/auth/login', {
+      login: async (email: string, pass: string): Promise<AuthReturn> => {
+        const response = await this.requestApi<AuthReturn>('/auth/login', {
           method: 'POST',
           body: { email, pass },
         })
@@ -86,8 +86,8 @@ class HttpApiAdapter implements ApiServices {
 
         return response
       },
-      refresh: async (): Promise<TokenReturn> => {
-        const response = await this.requestApi<TokenReturn>('/auth/refresh', {
+      refresh: async (): Promise<AuthReturn> => {
+        const response = await this.requestApi<AuthReturn>('/auth/refresh', {
           method: 'POST',
         })
 
@@ -97,11 +97,21 @@ class HttpApiAdapter implements ApiServices {
 
         return response
       },
-      logout: async (): Promise<void> => {
-        await this.request<void>('/auth/logout', { method: 'POST' })
+      logout: async (): Promise<LogoutReturn> => {
+        return await this.request<LogoutReturn>('/auth/logout', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${this.sessionToken}`,
+          },
+        })
       },
-      me: async (): Promise<AuthUser> => {
-        return this.request<AuthUser>('/auth/me')
+      logoutAll: async (): Promise<LogoutReturn> => {
+        return await this.request<LogoutReturn>('/auth/logout-all', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${this.sessionToken}`,
+          },
+        })
       },
     }
 
@@ -125,6 +135,7 @@ class HttpApiAdapter implements ApiServices {
           files: nodes.filter(isFileItem),
         }
       },
+      // folderContent:
       listTrash: async (): Promise<FileItem[]> => {
         const trash = await this.request<Array<FolderItem | FileItem>>('/trash')
         return trash.filter(isFileItem)

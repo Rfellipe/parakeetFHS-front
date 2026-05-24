@@ -1,8 +1,8 @@
 import { createContext, useContext } from 'react'
-import type { TokenInfo } from '../../types/domain'
+import type { LoginInfo } from '../../types/domain'
 
 export type AuthContextValue = {
-  session: TokenInfo | null
+  session: LoginInfo | null
   loading: boolean
   login: (email: string, password: string) => Promise<void>
   logout: () => Promise<void>

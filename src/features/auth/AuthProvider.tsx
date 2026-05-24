@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import type { TokenInfo } from '../../types/domain'
+import type { LoginInfo } from '../../types/domain'
 import { apiClient } from '../../services/client'
 import { AuthContext, type AuthContextValue } from './AuthContext'
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [session, setSession] = useState<TokenInfo | null>(null)
+  const [session, setSession] = useState<LoginInfo | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
